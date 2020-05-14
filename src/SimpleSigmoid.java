@@ -17,31 +17,32 @@ public class SimpleSigmoid {
         SimpleSigmoid p = new SimpleSigmoid();
 
         for(int i = 0; i<input.get(0).size()-1;i++){
-//            weights.add(0.0);
-            weights.add(r.nextDouble());
+            weights.add(0.0);
+//            weights.add(r.nextDouble());
         }
 
-    for(int j = 0;j<1000;j++) {
+    for(int j = 0;j<100000;j++) {
 
         for (int i = 0; i < input.size(); i++) {
-            weights = p.updateWeights(0.1, input.get(i), weights, p.excitation(input.get(i), weights));
+            weights = p.updateWeights(0.1   , input.get(i), weights, p.activationExp(p.excitation(input.get(i), weights)));
         }
     }
 
-
+    double error = 0;
     for(int i = 0;i<input.size();i++){
-        double a = input.get(i).get(input.get(i).size()-1);
-        double b = p.excitation(input.get(i),weights);
+        double a = p.activationExp(input.get(i).get(input.get(i).size()-1));
+        double b = p.activationExp(p.excitation(input.get(i),weights));
         System.out.printf("EXPECTED: %f PREDICTED %f = %f\n",a,b,a-b);
+        error += Math.abs(a-b);
     }
 
-
+        System.out.println(error);
     }
 
 
 
     private double excitation(List<Double> input, List<Double> weights){
-        double sum = -weights.get(0);
+        double sum = weights.get(0);
         for(int i = 1; i< input.size()-1;i++){
             sum += (input.get(i)*weights.get(i));
         }
@@ -58,6 +59,7 @@ public class SimpleSigmoid {
         return 1/(exp+1);
     }
 
+
     private double dTan(double x){
         double tan = activationTan(x);
         return 1 - Math.pow(tan,2);
@@ -72,11 +74,11 @@ public class SimpleSigmoid {
         List<Double> updatedWeights = new ArrayList<>();
         double expected = input.get(input.size()-1);
 
-        System.out.printf("expected %f predicted %f\n",activationExp(expected),prediction);
+        //System.out.printf("expected %f predicted %f\n",activationExp(expected),prediction);
 
         for(int i =0;i<input.size()-1;i++){
-            double delta = learnRate*(expected-prediction)*input.get(i)*dTan(excitation(input,weights));
-//            double delta = learnRate*(activationExp(expected)-prediction)*input.get(i)*dExp(excitation(input,weights));
+            double delta = learnRate*(activationExp(expected)-prediction)*input.get(i)*dExp(excitation(input,weights));
+//            double delta = learnRate*(activationTan(expected)-prediction)*input.get(i)*dTan(excitation(input,weights));
             updatedWeights.add(weights.get(i)+delta);
         }
 
