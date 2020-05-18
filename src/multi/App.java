@@ -11,8 +11,9 @@ public class App {
 
     public static void main(String[] args) throws FileNotFoundException {
         App a = new App();
-        a.learnNumbers();
+//        a.learnPrimes();
 
+        a.learnXOR();
 
     }
 
@@ -33,7 +34,7 @@ public class App {
             for(int j = 0; j<numbers.size();j++){
                 double error = net.backPropagate(numbers.get(j),outputs.get(j));
 
-                //System.out.println("Error at step "+i+" is "+error);
+                System.out.println(error);
             }
 
             //System.out.println(inputs.get(0)+" xor "+inputs.get(1)+" = "+output.get(0));
@@ -88,17 +89,21 @@ public class App {
         layers.add(1);
 
         MultiLayerPerceptron net = new MultiLayerPerceptron(layers);
-
+        Random r = new Random();
+        double minerror = Double.POSITIVE_INFINITY;
 
         for(int i = 0; i < 100000; i++) {
 
             for(int j = 0; j<numbers.size();j++){
+                //int j = r.nextInt(10);
                 double error = net.backPropagate(numbers.get(j),outputs.get(j));
+                if(error < minerror){
 
-                System.out.println("Error at step "+i+" is "+error);
+                }
+                if(i%100 == 0){
+                    //System.out.println(error);
+                }
             }
-
-            //System.out.println(inputs.get(0)+" xor "+inputs.get(1)+" = "+output.get(0));
 
         }
 
@@ -239,7 +244,8 @@ public class App {
             //System.out.println(inputs.get(0)+" xor "+inputs.get(1)+" = "+output.get(0));
 
             error = net.backPropagate(inputs, output);
-            //System.out.println("Error at step "+i+" is "+error);
+//            if(i%100 == 0)
+//            System.out.println(error);
         }
 
         System.out.println("Learning completed!");
@@ -249,6 +255,27 @@ public class App {
         inputs.add(1.0);
         inputs.add(1.0);
         List<Double> output = net.feedForward(inputs);
+
+        System.out.println(inputs.get(0)+" xor "+inputs.get(1)+" = "+Math.round(output.get(0))+" ("+output.get(0)+")");
+
+        inputs = new ArrayList<>();
+        inputs.add(1.0);
+        inputs.add(0.0);
+        output = net.feedForward(inputs);
+
+        System.out.println(inputs.get(0)+" xor "+inputs.get(1)+" = "+Math.round(output.get(0))+" ("+output.get(0)+")");
+
+        inputs = new ArrayList<>();
+        inputs.add(0.0);
+        inputs.add(1.0);
+        output = net.feedForward(inputs);
+
+        System.out.println(inputs.get(0)+" xor "+inputs.get(1)+" = "+Math.round(output.get(0))+" ("+output.get(0)+")");
+
+        inputs = new ArrayList<>();
+        inputs.add(0.0);
+        inputs.add(0.0);
+        output = net.feedForward(inputs);
 
         System.out.println(inputs.get(0)+" xor "+inputs.get(1)+" = "+Math.round(output.get(0))+" ("+output.get(0)+")");
     }

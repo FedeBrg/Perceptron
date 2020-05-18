@@ -1,9 +1,6 @@
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.Scanner;
+import java.util.*;
 
 public class SimpleSigmoid {
 
@@ -20,8 +17,8 @@ public class SimpleSigmoid {
 
 
         for(int i = 0; i<input.get(0).size()-1;i++){
-            weights.add(0.0);
-//            weights.add(r.nextDouble());
+//            weights.add(0.0);
+            weights.add(r.nextDouble());
         }
 
         double min = Double.POSITIVE_INFINITY;
@@ -37,36 +34,72 @@ public class SimpleSigmoid {
                     max = a;
                 }
             }
-//            System.out.println(max);
-//            System.out.println(min);
+
 
             for(List<Double> in : normalized) {
                 in.set(i,(in.get(i)-min)/(max-min));
             }
 
         }
-//        for(List<Double> in : normalized) {
-//            System.out.println(in);
-//        }
 
-    for(int j = 0;j<1000000;j++) {
+        Collections.reverse(input);
+        Collections.reverse(normalized);
+
+        double totalerror = 0;
+        double totalTrainError = 0;
+       // for(int size = 1;size<input.size();size++){
+            //for(int times = 0; times <5;times++) {
+                for (int i = 0; i < input.get(0).size() - 1; i++) {
+//            weights.add(0.0);
+                    weights.set(i,r.nextDouble());
+                }
+
+                for (int j = 0; j < 1000000; j++) {
+
+                    for (int i = 0; i < input.size()/2; i++) {
+
+                        int idx = r.nextInt(input.size()/2);
+                        weights = p.updateWeights(0.1, normalized.get(idx), weights, p.activationExp(p.excitation(normalized.get(idx), weights)), min, max);
+//            System.out.println(weights);
+                    }
+                }
+
+
+//                double error = 0;
+//                double trainError=0;
+//                for (int i = 0; i < i; i++) {
+//                    double a = input.get(i).get(input.get(i).size() - 1);
+//                    double b = (p.activationExp(p.excitation(normalized.get(i), weights)) * (max - min)) + min;
+////                    System.out.printf("%f\t%f\t%f\t%f\t\n",input.get(i).get(1),input.get(i).get(2),input.get(i).get(3),b);
+//                    trainError += Math.abs(a - b);
+//                }
+//                for (int i = size; i < input.size(); i++) {
+//                    double a = input.get(i).get(input.get(i).size() - 1);
+//                    double b = (p.activationExp(p.excitation(normalized.get(i), weights)) * (max - min)) + min;
+////                    System.out.printf("%f\t%f\t%f\t%f\t\n",input.get(i).get(1),input.get(i).get(2),input.get(i).get(3),b);
+//                    error += Math.abs(a - b);
+//                }
+//                totalTrainError += trainError;
+//                totalerror += error;
+//
+//           // }
+//            totalerror = totalerror/5;
+//            totalTrainError = totalTrainError/5;
+//            System.out.printf("%d %f %f\n",size,totalTrainError/size,totalerror/(input.size()-size));
+//            System.out.printf("SIZE %d\n",size);
+//            System.out.printf("TOTAL ERROR: %f\n", totalerror);
+//            System.out.printf("AVERAGE ERROR: %f\n", totalerror/(input.size()-size) );
+
+            totalerror = 0;
+       // }
 
         for (int i = 0; i < input.size(); i++) {
-            weights = p.updateWeights(0.1   , normalized.get(i), weights, p.activationExp(p.excitation(normalized.get(i), weights)), min , max);
-//            System.out.println(weights);
+            double a = input.get(i).get(input.get(i).size() - 1);
+            double b = (p.activationExp(p.excitation(normalized.get(i), weights)) * (max - min)) + min;
+            System.out.printf("%f\t%f\t%f\t%f\t\n",input.get(i).get(1),input.get(i).get(2),input.get(i).get(3),b);
         }
-    }
 
 
-    double error = 0;
-    for(int i = 0;i<input.size();i++){
-        double a = input.get(i).get(input.get(i).size()-1);
-        double b = (p.activationExp(p.excitation(normalized.get(i),weights))*(max-min))+min;
-        System.out.printf("EXPECTED: %f PREDICTED %f = %f\n",a,b,a-b);
-        error += Math.abs(a-b);
-    }
-
-        System.out.println(error);
     }
 
 

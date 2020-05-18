@@ -19,7 +19,7 @@ public class SimpleStep {
 //            weights.add(0.0); // CAMBIA MUCHO SI ESTO ES RANDOM O SE INICIALIZA EN 0
         }
 
-        for(int j = 0;j<100;j++) {
+        for(int j = 0;j<100000;j++) {
 
             for (int i = 0; i < input.size(); i++) {
                 if(i!=3)
@@ -27,20 +27,16 @@ public class SimpleStep {
             }
         }
 
-        for(Double d: weights){
-            System.out.println(d);
-        }
-//        weights = p.updateWeights(0.1,input.get(0),weights,p.activation(p.excitation(input.get(0),weights)));
-//        weights = p.updateWeights(0.1,input.get(1),weights,p.activation(p.excitation(input.get(1),weights)));
-//        weights = p.updateWeights(0.1,input.get(2),weights,p.activation(p.excitation(input.get(2),weights)));
-//        weights = p.updateWeights(0.1,input.get(3),weights,p.activation(p.excitation(input.get(3),weights)));
+
+
+
+        System.out.println("AND Function (simple)");
+        System.out.println();
+        System.out.println("Learning completed!");
         for(List<Integer> in : input){
-            for (Integer i :in){
-                System.out.printf("%d\t",i);
-            }
-            System.out.println();
+            System.out.printf("%d\tAND\t%d\t =\t%d\n",in.get(1),in.get(2),p.activation(p.excitation(in,weights)));
         }
-        System.out.println(p.activation(p.excitation(input.get(3),weights)));
+        System.out.println();
 
     }
 
